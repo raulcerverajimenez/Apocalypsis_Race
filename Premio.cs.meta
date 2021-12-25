@@ -1,0 +1,19 @@
+fileFormatVersion: 2
+guid: 7d478388f7be84542a096fabb7ce2fb1
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - go_premio: {fileID: 1202522996400206, guid: f87e7926fd589094b8a269e14b8bea5e,
+      type: 3}
+  - m_material_vida: {fileID: 2100000, guid: 1b537a4436c18a84086d2bf8f5ae603c, type: 2}
+  - m_material_proyectil: {fileID: 2100000, guid: cda0528b7f342fe468bf31ebd536a8d0,
+      type: 2}
+  - m_material_turbo: {fileID: 2100000, guid: c2af4bd8bd880f74385f43b6e9124012, type: 2}
+  - go_premio1: {fileID: 1202522996400206, guid: f87e7926fd589094b8a269e14b8bea5e,
+      type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
