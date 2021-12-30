@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Tornado : MonoBehaviour
 {
-
+    
     public GameObject go_capsula;
     public GameObject go_esfera;
     public GameObject go_tornado;
