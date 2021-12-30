@@ -1,5 +1,7 @@
 Videojuego desarrollado en unity y C#.
+
 Descripcion:
+
 El coche trata de sobrevivir en un entorno hóstil dónde lo árboles se caen,
 el volcán lanza piedras volcánicas y surgen remolinos de piedra y
 surgen remolinos de piedra.
