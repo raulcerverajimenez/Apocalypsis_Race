@@ -37,7 +37,7 @@ public class Destroy_arbol : MonoBehaviour
             i_cont_projectil++;
         }
 
-        if (i_cont_projectil >= 2)
+        if (i_cont_projectil >= 2 || hit.gameObject.name == "ParaGolpes")
         {
             a_audios.Reproductor(3);
             Destroy(Instantiate(go_explosio, transform.position, Quaternion.identity), 1.5f);

@@ -1,4 +1,6 @@
-/*Gestiona la vida del coche, los premios y los puntos*/
+/*
+ * Gestiona la vida del coche, los premios y los puntos
+ */
 
 
 using System.Collections.Generic;
@@ -12,46 +14,55 @@ public class Gestion_V_P : MonoBehaviour
     private bool b_gameRunning = true;
 
     private float f_puntos = 0;
-    public Text t_puntos;
+    public Text t_score;
     private int i_score = 0;
 
     private int i_vida = 100;
-    public InputField if_cont_vida;
+    public Text t_cont_vida;
+
+    public Text t_cont_turbo;
 
     private Dispar d_script_dispar;
     private Mov_coche m_script_movCoche;
     private Reloj r_script_reloj;
 
     public GameObject go_gameOver;
+    public GameObject go_gcontadores;
+    public GameObject go_paraGolpes;
 
     private List<AudioSource> l_audios_sonando;
 
+    public Scrollbar sb_vida;
+
+    private bool b_paraGolpes = false;
 
     void Start()
     {
-        a_audios = FindObjectOfType<Audios>();
+        t_cont_vida.text = 100 + "";
 
+        m_script_movCoche = FindObjectOfType<Mov_coche>();
+        a_audios = FindObjectOfType<Audios>();
         r_script_reloj = FindObjectOfType<Reloj>();
         d_script_dispar = FindObjectOfType<Dispar>();
-        m_script_movCoche = FindObjectOfType<Mov_coche>();
-
-
     }
 
     private void Update()
     {
+        t_cont_turbo.text = m_script_movCoche.I_turbo + "";
+
         if (i_vida <= 0)
         {
-
-            i_score = PlayerPrefs.GetInt("alias");
-
             //Activa la pantalla del Game Over
+            go_gcontadores.SetActive(false);
             go_gameOver.SetActive(true);
 
             //Desactiva el coche
             FindObjectOfType<Mov_coche>().enabled = false;
         }
-
+        //Texto de puntos final
+        //int puntosFinales = (int)(f_puntos / r_script_reloj.F_segTotales * 100);
+        int puntosFinales = (int)f_puntos;
+        t_score.text = PlayerPrefs.GetString("key", "Alias") + " ...... " + puntosFinales;
         //Pausa el juego
         if (Input.GetKeyDown(KeyCode.Space)) ChangeGameRunning();
     }
@@ -59,27 +70,40 @@ public class Gestion_V_P : MonoBehaviour
 
     private void OnTriggerEnter(Collider c)
     {
-        //if (c.gameObject.name.Substring(0, 4).Equals("Tree")) i_vida -= 10;
-
         switch (c.gameObject.name)
         {
             case "Large Rock 1(Clone)":
-                i_vida -= 10;
-                a_audios.Reproductor(4);
+                if (!b_paraGolpes)
+                {
+                    i_vida -= 10;
+                    a_audios.Reproductor(4);
+                    Scrollbar(-0.1f);
+                }
+
                 break;
 
             case "Tree 4":
-                i_vida -= 20;
-                a_audios.Reproductor(4);
+                if (!b_paraGolpes)
+                {
+                    i_vida -= 20;
+                    a_audios.Reproductor(4);
+                    Scrollbar(-0.2f);
+                }
                 break;
+
             case "Cap_tornado":
-                a_audios.Reproductor(4);
-                i_vida -= 20;
-                Destroy(c.gameObject);
+                if (!b_paraGolpes)
+                {
+                    a_audios.Reproductor(4);
+                    i_vida -= 20;
+                    //Destroy(c.gameObject);
+                    Scrollbar(-0.2f);
+                }
                 break;
 
             case "Premio_vida":
                 i_vida += 10;
+                Scrollbar(0.1f);
                 break;
 
             case "Premio_proyectil":
@@ -87,22 +111,55 @@ public class Gestion_V_P : MonoBehaviour
                 break;
 
             case "Premio_turbo":
-                m_script_movCoche.turbo();
+                //aumenta el turbo en 1
+                m_script_movCoche.I_turbo = 1;
                 break;
-            case "Premio_tamaño":
-                m_script_movCoche.cambiaEscala();
+
+            case "Premio_paraGolpes":
+                go_paraGolpes.SetActive(true);
+                b_paraGolpes = true;
+                Invoke("Desactiva", 7f);
                 break;
         }
 
         if (i_vida < 0) i_vida = 0;
+        if (i_vida > 100) i_vida = 100;
+        t_cont_vida.text = i_vida + "%";
 
-        if_cont_vida.text = i_vida + " %";
-        i_score = (int)(f_puntos / r_script_reloj.F_segTotales) * 150;
-
-        t_puntos.text = "Score: " + i_score;
-
+        ////Texto de puntos final
+        //int puntosFinales = (int)(f_puntos / r_script_reloj.F_segTotales * 100);
+        //t_score.text = PlayerPrefs.GetString("key", "Alias") + " ...... " + puntosFinales;
     }
 
+    //Desactiva el paragolpes
+    private void Desactiva()
+    {
+        go_paraGolpes.SetActive(false);
+        b_paraGolpes = false;
+    }
+
+    private Color newColor;
+
+
+    private void Scrollbar(float num)
+    {
+        sb_vida.size += num;
+        ColorBlock cb = sb_vida.colors;
+
+        if (sb_vida.size >= 0.6f)
+        {
+            cb.normalColor = Color.green;
+        }
+        else if (sb_vida.size <= 0.3f)
+        {
+            cb.normalColor = Color.red;
+        }
+        else if (sb_vida.size < 0.6f)
+        {
+            cb.normalColor = Color.yellow;
+        }
+        sb_vida.colors = cb;
+    }
 
     public void setPuntos(float puntos) { f_puntos += puntos; }
 

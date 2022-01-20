@@ -1,3 +1,6 @@
+/*
+ * Gestiona el movimiento de coche
+ */
 
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,6 +14,8 @@ public class Mov_coche : MonoBehaviour
     private Audios a_audios;
     private Gestion_estados ge_estados;
     private Moviment_Camara mc_camera;
+
+    public GameObject go_coche;
 
     Vector3 v3_l_posicon_final;
     Vector3 v3_g_posicion_final;
@@ -28,16 +33,25 @@ public class Mov_coche : MonoBehaviour
 
     public Text txt_velocimetro;
 
+    public GameObject go_turbo;
+    private int i_turbo = 0;
+    public int I_turbo { get => i_turbo; set => i_turbo += value; }
+    public int I_freno { get => i_freno; set => i_freno = value; }
 
-    private float f_freno = 1;
+    private int i_freno = 1;
+
+
 
     private void Start()
     {
+
+        //cc_coche = Ch.Find("Free_Racing_Car_Yellow");
+        //Instantiate(go_coche, (new Vector3(103, 1, 294)), Quaternion.Euler(new Vector3(0, 0, 0)));
         a_audios = FindObjectOfType<Audios>();
         mc_camera = FindObjectOfType<Moviment_Camara>();
         ge_estados = GetComponent<Gestion_estados>();
         cc_coche = GetComponent<CharacterController>();
-  
+
     }
 
     void Update()
@@ -57,12 +71,19 @@ public class Mov_coche : MonoBehaviour
             v3_l_posicon_final = Vector3.down;
 
             //Avanzar o retroceder con aceleracion/deceleración (eje Z)
-            v3_l_posicon_final += Vector3.forward * ge_estados.F_a_r * f_velocidad_max_m_s * f_freno;
+            v3_l_posicon_final += Vector3.forward * ge_estados.F_a_r * f_velocidad_max_m_s * i_freno;
 
             //Saltar
             if (ge_estados.B_saltar)
             {
                 v3_l_posicon_final += Vector3.up * f_bot;
+            }
+
+            //Turbo
+            if (ge_estados.B_turbo && i_turbo > 0)
+            {
+                i_turbo--;
+                turbo();
             }
 
             //lo transforma a cordenadas globales
@@ -73,8 +94,6 @@ public class Mov_coche : MonoBehaviour
 
             if (f_km_hora < 0) f_km_hora *= -1;
             txt_velocimetro.text = string.Format("{0:0}", f_km_hora);
-
-
 
         }
         else
@@ -120,6 +139,7 @@ public class Mov_coche : MonoBehaviour
         }
     }
 
+
     private void sonidoMotor()
     {
         a_audios.sonidoMotor(f_km_hora, f_velocidad_max_m_s);
@@ -129,11 +149,13 @@ public class Mov_coche : MonoBehaviour
     {
         f_velocidad_max_m_s = 60f;
         Invoke("velocidadNormal", 5f);
+        go_turbo.SetActive(true);
     }
 
     private void velocidadNormal()
     {
         f_velocidad_max_m_s = 40f;
+        go_turbo.SetActive(false);
     }
 
     public void cambiaEscala()
@@ -145,12 +167,6 @@ public class Mov_coche : MonoBehaviour
         Invoke("escala4", 1f);
         Invoke("escala5", 1.25f);
         Invoke("escala6", 1.5f);
-        //Invoke("escala7", 1.5f);
-        //Invoke("escala8", 1.75f);
-        //Invoke("escala9", 2f);
-        //Invoke("escala10", 2.5f);
-        //Invoke("escala11", 3f);
-
         Invoke("escalaNormal", 8f);
     }
 
@@ -160,13 +176,9 @@ public class Mov_coche : MonoBehaviour
     private void escala4() { cc_coche.transform.localScale = (new Vector3(1.8f, 1.8f, 1.8f)); }
     private void escala5() { cc_coche.transform.localScale = (new Vector3(2f, 2f, 2f)); }
     private void escala6() { cc_coche.transform.localScale = (new Vector3(2.2f, 2.2f, 2.2f)); }
-    private void escala7() { cc_coche.transform.localScale = (new Vector3(1.35f, 1.35f, 1.35f)); }
-    private void escala8() { cc_coche.transform.localScale = (new Vector3(1.4f, 1.4f, 1.4f)); }
-    private void escala9() { cc_coche.transform.localScale = (new Vector3(1.45f, 1.45f, 1.45f)); }
-    private void escala10() { cc_coche.transform.localScale = (new Vector3(1.5f, 1.5f, 1.5f)); }
-    private void escala11() { cc_coche.transform.localScale = (new Vector3(1.55f, 1.55f, 1.55f)); }
-    private void escalaNormal() 
-    { 
+
+    private void escalaNormal()
+    {
         cc_coche.transform.localScale = (new Vector3(1, 1, 1));
         mc_camera.B_camera = true;
     }

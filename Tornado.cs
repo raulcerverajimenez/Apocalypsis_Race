@@ -1,3 +1,8 @@
+/*
+ * Gestiona el tornado.
+ * Su velocidad de rotación y traslación.
+ */
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

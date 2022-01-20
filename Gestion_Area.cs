@@ -1,3 +1,9 @@
+/*
+ * Gestiona las areas
+ * El area detecta la entrada del coche, en ese instante derriba los árboles,
+ * crea premios, tornados y piedras volcánicas, todo ello de forma aleatoria.
+*/
+
 
 using System.Collections.Generic;
 using UnityEngine;
@@ -23,8 +29,6 @@ public class Gestion_Area : MonoBehaviour
 
     private void Start()
     {
-        
-        //go_premio = GameObject.Find("Premio");
         l_lista.Add(a_arbol_0);
         l_lista.Add(a_arbol_1);
         l_lista.Add(a_arbol_2);
@@ -51,8 +55,8 @@ public class Gestion_Area : MonoBehaviour
 
 
             /*Posicion para instanciar piedra respecto al área: 
-            - Coge la posicion local  del area y la transforma a global
-            - Le suma el vector que creamos y lo trtansforma a global
+             * Coge la posicion local  del area y la transforma a global
+             *Le suma el vector que creamos y lo trtansforma a global
             */
             Vector3 v3_pos_instanciar_piedra = area.transform.position +
                                 area.transform.TransformVector(new Vector3(0, 5, 20));
@@ -65,8 +69,6 @@ public class Gestion_Area : MonoBehaviour
                 v3_pos_instanciar_piedra.y += Random.Range(-10, 20);
                 v3_pos_instanciar_piedra.z += Random.Range(-20, 30);
             }
-
-
 
 
             /*Posicion para instanciar premio respecto al área: 
@@ -90,16 +92,10 @@ public class Gestion_Area : MonoBehaviour
             {
                 Instantiate(go_tornado, v3_pos_instanciar_tornado, Quaternion.Euler(new Vector3(0, 0, 0)));
                 //v3_pos_instanciar_premio.x += Random.Range(1, 2);
-                v3_pos_instanciar_premio.z += Random.Range(5, 10);
+                v3_pos_instanciar_tornado.z += Random.Range(5, 10);
             }
-
-            
-
         }
     }
-
-
-
 }
 
 

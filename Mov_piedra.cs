@@ -45,11 +45,11 @@ public class Mov_piedra : MonoBehaviour
     {
         if (hit.gameObject.name == "Terrain" && b_sonido_piedra)
         {
-            //se reproduce el sonido de la piedra cuando choca con el suelo
+            //se reproduce el sonido de la piedra cuando choca con el suelo.
             as_audioData = GetComponent<AudioSource>();
             as_audioData.Play(0);
 
-            // Esta variable booleana es para controlar que sólo reproduce elsonido
+            // Esta variable booleana es para controlar que sólo reproduce el sonido
             //la primera vez que toca el terreno.
             b_sonido_piedra = false; 
         }

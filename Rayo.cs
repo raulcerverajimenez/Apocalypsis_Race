@@ -1,3 +1,8 @@
+/*
+ * Gestiona los rayos, genera rayos cada X segundos.
+ * Se generan en función a la posición del coche.
+*/
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -30,7 +35,6 @@ public class Rayo : MonoBehaviour
             GenerarRayos();
             f_segundos = Random.Range(5, 13);
         }
-
     }
 
 
@@ -38,7 +42,8 @@ public class Rayo : MonoBehaviour
     {
 
         Vector3 v3_pos_instanciar_rayo = go_coche.transform.position +
-                                       go_coche.transform.TransformVector(new Vector3(Random.Range(-5, 2), 0, Random.Range(30, 40)));
+                        go_coche.transform.TransformVector(new Vector3(Random.Range(-5, 2), 0, Random.Range(30, 40)));
+
 
         for (int i = 0; i < Random.Range(1, 3); i++)
         {

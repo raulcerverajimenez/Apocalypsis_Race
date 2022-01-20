@@ -25,7 +25,7 @@ public class Destroy_piedra : MonoBehaviour
             i_cont_projectil++;
         }
 
-        if (i_cont_projectil >= 1)
+        if (i_cont_projectil >= 1 || hit.gameObject.name == "ParaGolpes")
         {
             //Destroy(Instantiate(go_explosio, transform.position, Quaternion.identity), 1.5f);
             Destroy(gameObject);

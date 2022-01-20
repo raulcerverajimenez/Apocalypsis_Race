@@ -1,3 +1,7 @@
+/*
+ * Gestiona los premios, les asigna nombre, material y efecto
+*/
+ 
 
 using UnityEngine;
 
@@ -11,7 +15,7 @@ public class Premio : MonoBehaviour
     public Material m_material_vida;
     public Material m_material_proyectil;
     public Material m_material_turbo;
-    public Material m_material_tamaño;
+    public Material m_material_paraGolpes;
 
     public GameObject go_efectoVida;
     public GameObject go_efectoProyectil;
@@ -26,14 +30,13 @@ public class Premio : MonoBehaviour
 
         a_audios = FindObjectOfType<Audios>();
 
-        //go_premio = GetComponent<GameObject>();
-        nombrePremios();
+        setPremios();
         go_premio.transform.localRotation = Quaternion.Euler(new Vector3(45, 0, 45));
       
         Destroy(gameObject, Random.Range(10, 15));
     }
 
-    private void nombrePremios()
+    private void setPremios()
     {
         //Accede al renderer del objeto
         Renderer rend = go_premio.GetComponent<Renderer>();
@@ -59,8 +62,8 @@ public class Premio : MonoBehaviour
                 Instantiate(go_efecto, transform.position + new Vector3(0, 2, 0), Quaternion.identity);
                 break;
             case 3:
-                go_premio.name = "Premio_tamaño";
-                rend.material = m_material_tamaño;
+                go_premio.name = "Premio_paraGolpes";
+                rend.material = m_material_paraGolpes;
                 go_efecto = go_efectoTurbo;
                 Instantiate(go_efecto, transform.position + new Vector3(0, 2, 0), Quaternion.identity);
                 break;

@@ -1,4 +1,6 @@
-/*Gestiona todos los audios del juego */
+/*
+ * Gestiona todos los audios del juego 
+ */
 
 using UnityEngine;
 
@@ -12,11 +14,7 @@ public class Audios : MonoBehaviour
     void Start()
     {
         audioSources = GetComponents<AudioSource>();
-        //foreach (AudioSource a in audioSources)
-        //{
-        //    Debug.Log("clio= " + a.clip.name);
-        //}
-
+        
         as_cancion = audioSources[0];
         as_disparo = audioSources[1];
         as_caidaArbol = audioSources[2];
@@ -26,8 +24,10 @@ public class Audios : MonoBehaviour
         as_golpeCoche = audioSources[6];
         as_motor = audioSources[7];
         as_trueno = audioSources[8];
+       
         as_cancion.Play();
         as_motor.Play();
+        
         as_motor.loop = true;
     }
 
@@ -59,6 +59,7 @@ public class Audios : MonoBehaviour
         }
     }
 
+    //el motor suena en función de la aceleración
     internal void sonidoMotor(float f_km_hora, float f_velocidad_max_m_s)
     {
         as_motor.pitch = (f_km_hora / 3.6f) / f_velocidad_max_m_s + 1;
