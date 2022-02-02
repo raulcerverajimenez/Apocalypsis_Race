@@ -17,9 +17,9 @@ public class Premio : MonoBehaviour
     public Material m_material_turbo;
     public Material m_material_paraGolpes;
 
-    public GameObject go_efectoVida;
-    public GameObject go_efectoProyectil;
-    public GameObject go_efectoTurbo;
+    public ParticleSystem go_efectoVida;
+    public ParticleSystem go_efectoProyectil;
+    public ParticleSystem go_efectoTurbo;
 
     private Vector3 v3_posicionInicial;
 
@@ -31,7 +31,7 @@ public class Premio : MonoBehaviour
         a_audios = FindObjectOfType<Audios>();
 
         setPremios();
-        go_premio.transform.localRotation = Quaternion.Euler(new Vector3(45, 0, 45));
+        //go_premio.transform.localRotation = Quaternion.Euler(new Vector3(45, 0, 45) * Time.deltaTime);
       
         Destroy(gameObject, Random.Range(10, 15));
     }
@@ -46,26 +46,26 @@ public class Premio : MonoBehaviour
             case 0:
                 go_premio.name = "Premio_vida";
                 rend.material = m_material_vida;
-                go_efecto = go_efectoVida;
-                Instantiate(go_efecto, transform.position + new Vector3(0, 2, 0), Quaternion.identity);
+                //go_efecto = go_efectoVida;
+                //Instantiate(go_efecto, transform.position + new Vector3(0, 2, 0), Quaternion.identity);
                 break;
             case 1:
                 go_premio.name = "Premio_proyectil";
                 rend.material = m_material_proyectil;
-                go_efecto = go_efectoProyectil;
-                Instantiate(go_efecto, transform.position + new Vector3(0, 2, 0), Quaternion.identity);
+                //go_efecto = go_efectoProyectil;
+                //Instantiate(go_efecto, transform.position + new Vector3(0, 2, 0), Quaternion.identity);
                 break;
             case 2:
                 go_premio.name = "Premio_turbo";
                 rend.material = m_material_turbo;
-                go_efecto = go_efectoTurbo;
-                Instantiate(go_efecto, transform.position + new Vector3(0, 2, 0), Quaternion.identity);
+                //go_efecto = go_efectoTurbo;
+                //Instantiate(go_efecto, transform.position + new Vector3(0, 2, 0), Quaternion.identity);
                 break;
             case 3:
                 go_premio.name = "Premio_paraGolpes";
                 rend.material = m_material_paraGolpes;
-                go_efecto = go_efectoTurbo;
-                Instantiate(go_efecto, transform.position + new Vector3(0, 2, 0), Quaternion.identity);
+                //go_efecto = go_efectoTurbo;
+                //Instantiate(go_efecto, transform.position + new Vector3(0, 2, 0), Quaternion.identity);
                 break;
         }
 
@@ -83,7 +83,6 @@ public class Premio : MonoBehaviour
         {
             a_audios.Reproductor(5);
             Destroy(gameObject);
-            //DestroyImmediate(go_efecto, true);
             
         }
     }

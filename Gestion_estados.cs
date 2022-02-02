@@ -49,9 +49,12 @@ public class Gestion_estados : MonoBehaviour
 
             b_turbo = Input.GetKeyDown(KeyCode.X) ? true : false;
             b_disparar = Input.GetKeyDown(KeyCode.C) ? true : false;
+            b_saltar = Input.GetKeyDown(KeyCode.V) ? true : false;
         }
     }
 
+    //métodos para la versión android
+    
     public void Turbo()
     {
         b_turbo = true;
@@ -70,5 +73,15 @@ public class Gestion_estados : MonoBehaviour
     public void No_disparar()
     {
         b_disparar = false;
+    }
+
+    public void Saltar()
+    {
+        b_saltar = true;
+    }
+
+    public void No_saltarr()
+    {
+        b_saltar = false;
     }
 }

@@ -7,13 +7,10 @@ public class Destroy_piedra : MonoBehaviour
     private Gestion_V_P script_gvp;
     public GameObject go_explosio; //efecto de explosion 
     public int i_cont_projectil;
-    
-    Rigidbody rb_piedra;
 
     public void Start()
     {
         script_gvp = FindObjectOfType<Gestion_V_P>();
-        rb_piedra = GetComponent<Rigidbody>();
     }
 
 
@@ -29,7 +26,7 @@ public class Destroy_piedra : MonoBehaviour
         {
             //Destroy(Instantiate(go_explosio, transform.position, Quaternion.identity), 1.5f);
             Destroy(gameObject);
-            script_gvp.setPuntos(200);
+            script_gvp.setPuntos(225);
         }
     }
 }

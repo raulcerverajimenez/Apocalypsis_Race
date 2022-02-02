@@ -2,6 +2,7 @@
  * Gestiona el movimiento de coche
  */
 
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,22 +12,10 @@ using UnityEngine.UI;
 
 public class Mov_coche : MonoBehaviour
 {
-    private Audios a_audios;
-    private Gestion_estados ge_estados;
-    private Moviment_Camara mc_camera;
-
-    public GameObject go_coche;
-
-    Vector3 v3_l_posicon_final;
-    Vector3 v3_g_posicion_final;
-
-    public Vector3 v3_g_gravedad = new Vector3(0, -9.8f, 0);
-    public float f_km_hora;
-    public float f_velocidad_max_m_s = 40f;
-    public float f_bot = 9f;
-    public float f_sensibilidad_giro = 65f;
-
-    CharacterController cc_coche;
+    public ParticleSystem ps_polvoRueda1;
+    public ParticleSystem Ps_polvoRueda1 {set => ps_polvoRueda1 = value; }
+    public ParticleSystem ps_polvoRueda2;
+    public ParticleSystem Ps_polvoRueda2 {set => ps_polvoRueda2 = value; }
 
     public Transform t_rueda_izq;
     public Transform t_rueda_der;
@@ -34,24 +23,34 @@ public class Mov_coche : MonoBehaviour
     public Text txt_velocimetro;
 
     public GameObject go_turbo;
-    private int i_turbo = 0;
+    private bool b_turbo = false;
+    private int i_turbo = 1;
     public int I_turbo { get => i_turbo; set => i_turbo += value; }
-    public int I_freno { get => i_freno; set => i_freno = value; }
+    
 
-    private int i_freno = 1;
+    private Audios a_audios;
+    private Gestion_estados ge_estados;
+    private Moviment_Camara mc_camera;
 
+    private Vector3 v3_l_posicon_final;
+    private Vector3 v3_g_posicion_final;
+    private Vector3 v3_g_gravedad = new Vector3(0, -9.8f, 0);
+
+    private float f_km_hora;
+
+    private float f_velocidad_max_m_s = 40f;
+    private float f_bot = 9f;
+    private float f_sensibilidad_giro = 65f;
+
+    private CharacterController cc_coche;
 
 
     private void Start()
     {
-
-        //cc_coche = Ch.Find("Free_Racing_Car_Yellow");
-        //Instantiate(go_coche, (new Vector3(103, 1, 294)), Quaternion.Euler(new Vector3(0, 0, 0)));
         a_audios = FindObjectOfType<Audios>();
         mc_camera = FindObjectOfType<Moviment_Camara>();
         ge_estados = GetComponent<Gestion_estados>();
         cc_coche = GetComponent<CharacterController>();
-
     }
 
     void Update()
@@ -60,6 +59,7 @@ public class Mov_coche : MonoBehaviour
         giroCoche();
         giroRuedas();
         sonidoMotor();
+        polvoRuedas();
     }
 
 
@@ -71,7 +71,7 @@ public class Mov_coche : MonoBehaviour
             v3_l_posicon_final = Vector3.down;
 
             //Avanzar o retroceder con aceleracion/deceleración (eje Z)
-            v3_l_posicon_final += Vector3.forward * ge_estados.F_a_r * f_velocidad_max_m_s * i_freno;
+            v3_l_posicon_final += Vector3.forward * ge_estados.F_a_r * f_velocidad_max_m_s;
 
             //Saltar
             if (ge_estados.B_saltar)
@@ -142,7 +142,7 @@ public class Mov_coche : MonoBehaviour
 
     private void sonidoMotor()
     {
-        a_audios.sonidoMotor(f_km_hora, f_velocidad_max_m_s);
+        a_audios.sonidoMotor(f_km_hora, f_velocidad_max_m_s, b_turbo);
     }
 
     public void turbo()
@@ -150,39 +150,29 @@ public class Mov_coche : MonoBehaviour
         f_velocidad_max_m_s = 60f;
         Invoke("velocidadNormal", 5f);
         go_turbo.SetActive(true);
+        b_turbo = true;
     }
 
     private void velocidadNormal()
     {
         f_velocidad_max_m_s = 40f;
         go_turbo.SetActive(false);
+        b_turbo = false;
     }
 
-    public void cambiaEscala()
+
+    //Controla el polvo que emiten las ruedas
+    private void polvoRuedas()
     {
-        mc_camera.B_camera = false;
-        Invoke("escala1", 0.25f);
-        Invoke("escala2", 0.50f);
-        Invoke("escala3", 0.75f);
-        Invoke("escala4", 1f);
-        Invoke("escala5", 1.25f);
-        Invoke("escala6", 1.5f);
-        Invoke("escalaNormal", 8f);
+        if (cc_coche.isGrounded && f_km_hora != 0)
+        {
+            ps_polvoRueda1.Play();
+            ps_polvoRueda2.Play();
+        }
+        else
+        {
+            ps_polvoRueda1.Stop();
+            ps_polvoRueda2.Stop();
+        }
     }
-
-    private void escala1() { cc_coche.transform.localScale = (new Vector3(1.2f, 1.2f, 1.2f)); }
-    private void escala2() { cc_coche.transform.localScale = (new Vector3(1.4f, 1.4f, 1.4f)); }
-    private void escala3() { cc_coche.transform.localScale = (new Vector3(1.6f, 1.6f, 1.6f)); }
-    private void escala4() { cc_coche.transform.localScale = (new Vector3(1.8f, 1.8f, 1.8f)); }
-    private void escala5() { cc_coche.transform.localScale = (new Vector3(2f, 2f, 2f)); }
-    private void escala6() { cc_coche.transform.localScale = (new Vector3(2.2f, 2.2f, 2.2f)); }
-
-    private void escalaNormal()
-    {
-        cc_coche.transform.localScale = (new Vector3(1, 1, 1));
-        mc_camera.B_camera = true;
-    }
-
-
-
 }

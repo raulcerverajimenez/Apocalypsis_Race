@@ -13,16 +13,13 @@ public class Destroy_arbol : MonoBehaviour
     private Vector3 v3_posicion_inicial;
     private Quaternion q_rotacion_inicial;
 
-    public GameObject go_explosio;//efecto de explosion cuando choca con algo
+    public GameObject go_explosio;//efecto de explosion 
     public int i_cont_projectil;
-    GameObject go_arbol;
 
     public void Start()
     {
         a_audios = FindObjectOfType<Audios>();
         g_gvp = FindObjectOfType<Gestion_V_P>();
-
-        go_arbol = GetComponent<GameObject>();
 
         v3_posicion_inicial = transform.position;
         q_rotacion_inicial = transform.rotation;
@@ -37,14 +34,14 @@ public class Destroy_arbol : MonoBehaviour
             i_cont_projectil++;
         }
 
-        if (i_cont_projectil >= 2 || hit.gameObject.name == "ParaGolpes")
+        if (i_cont_projectil >= 2)
         {
             a_audios.Reproductor(3);
             Destroy(Instantiate(go_explosio, transform.position, Quaternion.identity), 1.5f);
             //Destroy(gameObject);
 
             i_cont_projectil = 0;
-            g_gvp.setPuntos(500);
+            g_gvp.setPuntos(525);
             gameObject.GetComponent<MeshRenderer>().enabled = false;
             gameObject.transform.position = v3_posicion_inicial;
             gameObject.transform.rotation = q_rotacion_inicial;
@@ -52,6 +49,7 @@ public class Destroy_arbol : MonoBehaviour
         }
     }
 
+    //Devuelve el Mesh al arbol
     private void resetArbol()
     {
         gameObject.GetComponent<MeshRenderer>().enabled = true;

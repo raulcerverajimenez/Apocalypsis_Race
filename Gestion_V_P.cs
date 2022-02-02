@@ -1,5 +1,5 @@
 /*
- * Gestiona la vida del coche, los premios y los puntos
+ * Gestiona la vida del coche, los premios y los puntos.
  */
 
 
@@ -14,8 +14,13 @@ public class Gestion_V_P : MonoBehaviour
     private bool b_gameRunning = true;
 
     private float f_puntos = 0;
-    public Text t_score;
     private int i_score = 0;
+
+    public Text t_score1;
+    public Text t_puntos;
+    public Text t_tiempo;
+    public Text t_total;
+    public Text t_nombre;
 
     private int i_vida = 100;
     public Text t_cont_vida;
@@ -52,17 +57,34 @@ public class Gestion_V_P : MonoBehaviour
 
         if (i_vida <= 0)
         {
+            //apagar efecto polvo
+            m_script_movCoche.ps_polvoRueda1.Stop();
+            m_script_movCoche.ps_polvoRueda2.Stop();
+
+            //apaga el sonido del motor
+            a_audios.Reproductor(7);
+
             //Activa la pantalla del Game Over
             go_gcontadores.SetActive(false);
             go_gameOver.SetActive(true);
 
-            //Desactiva el coche
+            //Desactiva el script coche
             FindObjectOfType<Mov_coche>().enabled = false;
+
+            //Texto de puntos final
+            int puntosFinales = (int)(f_puntos / (int)r_script_reloj.F_segTotales * 100);
+            t_nombre.text = PlayerPrefs.GetString("key", "Alias");
+            t_puntos.text = f_puntos.ToString();
+            int minutos = ((int)r_script_reloj.F_segTotales / 60);
+            int segundos = ((int)r_script_reloj.F_segTotales % 60);
+            t_tiempo.text = "'" +  minutos + " ''" + segundos;
+            t_total.text =  puntosFinales.ToString();
         }
-        //Texto de puntos final
-        //int puntosFinales = (int)(f_puntos / r_script_reloj.F_segTotales * 100);
-        int puntosFinales = (int)f_puntos;
-        t_score.text = PlayerPrefs.GetString("key", "Alias") + " ...... " + puntosFinales;
+
+
+        //Texto puntos partida
+        t_score1.text = f_puntos.ToString();
+
         //Pausa el juego
         if (Input.GetKeyDown(KeyCode.Space)) ChangeGameRunning();
     }
@@ -75,9 +97,9 @@ public class Gestion_V_P : MonoBehaviour
             case "Large Rock 1(Clone)":
                 if (!b_paraGolpes)
                 {
-                    i_vida -= 10;
+                    i_vida -= 5;
                     a_audios.Reproductor(4);
-                    Scrollbar(-0.1f);
+                    Scrollbar(-0.05f);
                 }
 
                 break;
@@ -85,9 +107,9 @@ public class Gestion_V_P : MonoBehaviour
             case "Tree 4":
                 if (!b_paraGolpes)
                 {
-                    i_vida -= 20;
+                    i_vida -= 10;
                     a_audios.Reproductor(4);
-                    Scrollbar(-0.2f);
+                    Scrollbar(-0.1f);
                 }
                 break;
 
@@ -95,9 +117,9 @@ public class Gestion_V_P : MonoBehaviour
                 if (!b_paraGolpes)
                 {
                     a_audios.Reproductor(4);
-                    i_vida -= 20;
+                    i_vida -= 15;
                     //Destroy(c.gameObject);
-                    Scrollbar(-0.2f);
+                    Scrollbar(-0.15f);
                 }
                 break;
 
@@ -118,6 +140,15 @@ public class Gestion_V_P : MonoBehaviour
             case "Premio_paraGolpes":
                 go_paraGolpes.SetActive(true);
                 b_paraGolpes = true;
+                
+                Invoke("Desactiva1", 5f);
+                Invoke("Desactiva2", 5.25f);
+                Invoke("Desactiva3", 5.5f);
+                Invoke("Desactiva4", 5.75f);
+                Invoke("Desactiva5", 6f);
+                Invoke("Desactiva6", 6.25f);
+                Invoke("Desactiva7", 6.5f);
+                Invoke("Desactiva8", 6.75f);
                 Invoke("Desactiva", 7f);
                 break;
         }
@@ -126,19 +157,23 @@ public class Gestion_V_P : MonoBehaviour
         if (i_vida > 100) i_vida = 100;
         t_cont_vida.text = i_vida + "%";
 
-        ////Texto de puntos final
-        //int puntosFinales = (int)(f_puntos / r_script_reloj.F_segTotales * 100);
-        //t_score.text = PlayerPrefs.GetString("key", "Alias") + " ...... " + puntosFinales;
     }
 
     //Desactiva el paragolpes
+
+    private void Desactiva1() { go_paraGolpes.SetActive(false); }
+    private void Desactiva2() { go_paraGolpes.SetActive(true); }
+    private void Desactiva3() { go_paraGolpes.SetActive(false); }
+    private void Desactiva4() { go_paraGolpes.SetActive(true); }
+    private void Desactiva5() { go_paraGolpes.SetActive(false); }
+    private void Desactiva6() { go_paraGolpes.SetActive(true); }
+    private void Desactiva7() { go_paraGolpes.SetActive(false); }
+    private void Desactiva8() { go_paraGolpes.SetActive(true); }
     private void Desactiva()
     {
         go_paraGolpes.SetActive(false);
         b_paraGolpes = false;
     }
-
-    private Color newColor;
 
 
     private void Scrollbar(float num)

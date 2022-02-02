@@ -8,6 +8,8 @@ using UnityEngine.UI;
 
 public class Dispar : MonoBehaviour
 {
+    public Vector3 v3_posEfecto = new Vector3(0, 0, -4);
+
     private Gestion_estados ge_estados;
     private Audios a_audios;
 
@@ -20,7 +22,7 @@ public class Dispar : MonoBehaviour
 
     public void Start()
     {
-        i_cont_proyectil = 30;
+        i_cont_proyectil = 40;
         ge_estados = GetComponent<Gestion_estados>();
         a_audios = FindObjectOfType<Audios>();
     }
@@ -36,8 +38,7 @@ public class Dispar : MonoBehaviour
 
                 Instantiate(go_proyectil, t_punt_dispar.position, t_punt_dispar.rotation);
 
-                Vector3 v3_pos_instanciar_efecto = t_punt_dispar.transform.position + t_punt_dispar.transform.TransformVector(new Vector3(0, 0, -4));
-
+                Vector3 v3_pos_instanciar_efecto = t_punt_dispar.transform.position + t_punt_dispar.transform.TransformVector(v3_posEfecto);
                 Destroy(Instantiate(go_efectoDispar, v3_pos_instanciar_efecto, Quaternion.identity), 0.5f);
 
                 i_cont_proyectil--;

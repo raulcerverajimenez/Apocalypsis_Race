@@ -15,14 +15,12 @@ public class Gestion_Area : MonoBehaviour
     public GameObject go_tornado;
     public Rigidbody rb_piedra;
 
-
     public Arbol a_arbol_0;
     public Arbol a_arbol_1;
     public Arbol a_arbol_2;
     public Arbol a_arbol_3;
 
-    List<Arbol> l_lista = new List<Arbol>();
-
+    private List<Arbol> l_lista = new List<Arbol>();
     private Arbol rb_arbol;
 
     public GameObject area;
@@ -44,6 +42,7 @@ public class Gestion_Area : MonoBehaviour
 
             //Elige arboles de forma aleatoria
             int i_cont = Random.Range(1, 4);
+            
             for (int i = 0; i < i_cont; i++)
             {
                 int i_tamaño = l_lista.Count;
@@ -67,7 +66,7 @@ public class Gestion_Area : MonoBehaviour
 
                 v3_pos_instanciar_piedra.x += Random.Range(-10, 10);
                 v3_pos_instanciar_piedra.y += Random.Range(-10, 20);
-                v3_pos_instanciar_piedra.z += Random.Range(-20, 30);
+                v3_pos_instanciar_piedra.z += Random.Range(-20, 20);
             }
 
 
@@ -82,9 +81,14 @@ public class Gestion_Area : MonoBehaviour
             {
                 Instantiate(go_premio, v3_pos_instanciar_premio, Quaternion.Euler(new Vector3(0, 0, 0)));
                 v3_pos_instanciar_premio.x += Random.Range(1, 2);
-                v3_pos_instanciar_premio.z += Random.Range(-5, 25);
+                v3_pos_instanciar_premio.z += Random.Range(-5, 15);
             }
 
+
+            /*Posicion para instanciar tornado respecto al área: 
+            - Coge la posicion local  del area y la transforma a global
+            - Le suma el vector que creamos y lo trtansforma a global
+            */
             Vector3 v3_pos_instanciar_tornado = area.transform.position +
                                 area.transform.TransformVector(new Vector3(0, 0.01f, 10));
 

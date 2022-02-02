@@ -22,7 +22,7 @@ public class Arbol : MonoBehaviour
 
         rb_arbol.AddForceAtPosition(transform.forward * f_fuerza,
                         transform.position + new Vector3(0, 20f, 0));
-        //transform forwad --> vector local z del arbol transformado a global
+        //transform.forwad --> vector local z del arbol transformado a global
         //transform.position + new Vector3(0, 20f, 0) --> aplica la fuerza en el punto 20f
 
         a_audios.Reproductor(1);
